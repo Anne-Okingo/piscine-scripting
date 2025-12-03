@@ -4,5 +4,5 @@
 grep "^It takes 12 honey" file-researcher/facts.txt
 
 
-#Find all lines containing the word "year"
-grep "year" file-researcher/facts.txt
+#Print all lines containing "year" with line numbers
+grep -n "year" file-researcher/facts.txt
