@@ -1,3 +1,5 @@
 #!/bin/bash
 
-ls -l --time-style="+%F %R" hard-perm 2>/dev/null | sed '1d' | awk '{print $1, $6, $7, $5, $8}'
+cd hard-perm
+
+ls -l --time-style="+%F %R" | sed '1d' | awk '{print $1, $6, $7, $8}'
