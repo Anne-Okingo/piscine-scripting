@@ -18,17 +18,18 @@ TRIES=5
 MOVE_COUNT=0
 
 while [ $TRIES -gt 0 ]; do
+    # Prompt user
     echo "Enter your guess ($TRIES tries left):"
     read guess
 
-    # Validate guess (must be numeric)
+    # Validate input (must be numeric)
     if ! [[ "$guess" =~ ^[0-9]+$ ]]; then
-        continue  # invalid input, try again without reducing TRIES
+        continue  # invalid input, do NOT decrement TRIES
     fi
 
     MOVE_COUNT=$((MOVE_COUNT + 1))
 
-    # Compare guess with secret
+    # Compare guess to secret
     if [ "$guess" -eq "$SECRET" ]; then
         echo "Congratulations, you found the number in $MOVE_COUNT moves!"
         exit 0
@@ -42,5 +43,5 @@ while [ $TRIES -gt 0 ]; do
     TRIES=$((TRIES - 1))
 done
 
-# If player runs out of tries
+# Player failed to guess
 echo "You lost, the number was $SECRET"
