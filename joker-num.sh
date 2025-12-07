@@ -3,45 +3,42 @@
 # --- Validate argument count ---
 if [ $# -ne 1 ]; then
     >&2 echo "Error: wrong argument"
-    exit 1
 fi
 
 SECRET=$1
 
-# --- Check secret number is numeric and between 1 and 100 ---
-if ! [[ $SECRET =~ ^[0-9]+$ ]] || [ "$SECRET" -lt 1 ] || [ "$SECRET" -gt 100 ]; then
+# --- Check secret number is between 1 and 100 ---
+if ! [[ $SECRET =~ ^[+-]?[0-9]+$ ]] || [ "$SECRET" -lt 1 ] || [ "$SECRET" -gt 100 ]; then
     >&2 echo "Error: wrong argument"
-    exit 1
 fi
 
 TRIES=5
 MOVE_COUNT=0
 
-while [ $TRIES -gt 0 ]; do
-    # Prompt user
-    echo "Enter your guess ($TRIES tries left):"
+for ((i=TRIES; i>0; )); do
+    echo "Enter your guess ($i tries left):"
     read guess
 
-    # Validate input (must be numeric)
-    if ! [[ "$guess" =~ ^[0-9]+$ ]]; then
-        continue  # invalid input, do NOT decrement TRIES
+    # If empty or non-numeric → ask again WITHOUT reducing tries
+    if ! [[ $guess =~ ^-?[0-9]+$ ]]; then
+        continue
     fi
 
     MOVE_COUNT=$((MOVE_COUNT + 1))
 
-    # Compare guess to secret
+    # Compare
     if [ "$guess" -eq "$SECRET" ]; then
         echo "Congratulations, you found the number in $MOVE_COUNT moves!"
         exit 0
-    elif [ "$guess" -lt "$SECRET" ]; then
-        echo "Go up"
-    else
+    elif [ "$guess" -gt "$SECRET" ]; then
         echo "Go down"
+    else
+        echo "Go up"
     fi
 
-    # Reduce remaining tries after valid guess
-    TRIES=$((TRIES - 1))
+    # Only decrease tries AFTER a valid guess
+    i=$((i - 1))
 done
 
-# Player failed to guess
+# If loop ends without finding the number
 echo "You lost, the number was $SECRET"
