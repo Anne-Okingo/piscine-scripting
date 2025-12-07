@@ -1,22 +1,26 @@
 #!/bin/bash
 
 # Check if exactly 2 arguments are provided
-if [ $# -ne 2 ]; then
+if [[ $# -ne 2 ]]; then
     echo "Error: The script only works with two arguments!"
     exit 1
 fi
 
+# Assign arguments
+arg1=$1
+arg2=$2
+
 # Check if both arguments are positive numbers
-if ! [[ $1 =~ ^[0-9]+$ ]] || ! [[ $2 =~ ^[0-9]+$ ]]; then
+if ! [[ "$arg1" =~ ^[0-9]+$ ]] || ! [[ "$arg2" =~ ^[0-9]+$ ]]; then
     echo "Error: Only two numeric arguments are acceptable!"
     exit 1
 fi
 
-# Compare the two numbers
-if [ $1 -gt $2 ]; then
-    echo "$1 > $2"
-elif [ $1 -lt $2 ]; then
-    echo "$1 < $2"
+# Compare the numbers
+if [[ "$arg1" -gt "$arg2" ]]; then
+    echo "$arg1 > $arg2"
+elif [[ "$arg1" -lt "$arg2" ]]; then
+    echo "$arg1 < $arg2"
 else
-    echo "$1 = $2"
+    echo "$arg1 = $arg2"
 fi
