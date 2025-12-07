@@ -2,7 +2,7 @@
 
 # --- Validate argument count ---
 if [ $# -ne 1 ]; then
-    echo "Error: wrong argument" >&2
+       >&2 echo "Error: wrong argument"
     exit 1
 fi
 
@@ -10,7 +10,7 @@ SECRET=$1
 
 # --- Check secret number is between 1 and 100 ---
 if ! [[ $SECRET =~ ^[0-9]+$ ]] || [ "$SECRET" -lt 1 ] || [ "$SECRET" -gt 100 ]; then
-    echo "Error: wrong argument" >&2
+        >&2 echo "Error: wrong argument"
     exit 1
 fi
 
