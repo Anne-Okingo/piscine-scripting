@@ -13,12 +13,12 @@ for (( i=1; i<=max_tries; i++ )); do
     tries_left=$(( max_tries - i + 1 ))
 
     # Prompt for guess
-    echo -n "Enter your guess ($tries_left tries left): "
+    echo "Enter your guess ($tries_left tries left):"
     read guess
 
     # Check if input is a valid number
     while ! [[ "$guess" =~ ^[0-9]+$ ]]; do
-        echo -n "Enter your guess ($tries_left tries left): "
+        echo "Enter your guess ($tries_left tries left):"
         read guess
     done
 
