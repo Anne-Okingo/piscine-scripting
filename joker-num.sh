@@ -3,13 +3,15 @@
 # --- Validate argument count ---
 if [ $# -ne 1 ]; then
     >&2 echo "Error: wrong argument"
+    exit 1
 fi
 
 SECRET=$1
 
 # --- Check secret number is between 1 and 100 ---
-if ! [[ $SECRET =~ ^[+-]?[0-9]+$ ]] || [ "$SECRET" -lt 1 ] || [ "$SECRET" -gt 100 ]; then
+if ! [[ $SECRET =~ ^[0-9]+$ ]] || [ "$SECRET" -lt 1 ] || [ "$SECRET" -gt 100 ]; then
     >&2 echo "Error: wrong argument"
+    exit 1
 fi
 
 TRIES=5
@@ -17,10 +19,10 @@ MOVE_COUNT=0
 
 for ((i=TRIES; i>0; )); do
     echo "Enter your guess ($i tries left):"
-    read guess
+    read guess || exit 1  # Exit if read fails (no input available)
 
     # If empty or non-numeric → ask again WITHOUT reducing tries
-    if ! [[ $guess =~ ^-?[0-9]+$ ]]; then
+    if [[ -z "$guess" ]] || ! [[ $guess =~ ^[0-9]+$ ]]; then
         continue
     fi
 
