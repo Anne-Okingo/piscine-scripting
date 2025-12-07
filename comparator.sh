@@ -6,8 +6,8 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-# Check if both arguments are numeric
-if ! [[ $1 =~ ^-?[0-9]+$ ]] || ! [[ $2 =~ ^-?[0-9]+$ ]]; then
+# Check if both arguments are positive numbers
+if ! [[ $1 =~ ^[0-9]+$ ]] || ! [[ $2 =~ ^[0-9]+$ ]]; then
     echo "Error: Only two numeric arguments are acceptable!"
     exit 1
 fi
