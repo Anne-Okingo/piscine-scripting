@@ -1,46 +1,45 @@
 #!/bin/bash
 
-# --- Validate argument count ---
-if [ $# -ne 1 ]; then
-       >&2 echo "Error: wrong argument"
-    exit 1
+# Validate argument
+if [ $# -ne 1 ] || ! [[ "$1" =~ ^[0-9]+$ ]] || [ "$1" -lt 1 ] || [ "$1" -gt 100 ]; then
+  echo "Error: wrong argument"
+  exit 1
 fi
 
-SECRET=$1
+secret=$1
+tries=5
+attempts=0
 
-# --- Check secret number is between 1 and 100 ---
-if ! [[ $SECRET =~ ^[0-9]+$ ]] || [ "$SECRET" -lt 1 ] || [ "$SECRET" -gt 100 ]; then
-        >&2 echo "Error: wrong argument"
-    exit 1
-fi
+# Loop while tries remain
+while [ $tries -gt 0 ]; do
+  echo "Enter your guess ($tries tries left):"
+  read -r guess
 
-TRIES=5
-MOVE_COUNT=0
+  # If empty or not an integer -> ask again without decrementing tries
+  if [[ -z "$guess" || ! "$guess" =~ ^-?[0-9]+$ ]]; then
+    continue
+  fi
 
-for ((i=TRIES; i>0; )); do
-    echo "Enter your guess ($i tries left):"
-    read guess || exit 1
+  # Ensure it's within 1..100.
+  if [ "$guess" -lt 1 ] || [ "$guess" -gt 100 ]; then
+    continue
+  fi
 
-    # If empty or non-numeric → ask again WITHOUT reducing tries
-    if [[ -z "$guess" ]] || ! [[ $guess =~ ^[0-9]+$ ]]; then
-        continue
-    fi
+  # Valid guess: count the attempt
+  attempts=$((attempts + 1))
 
-    MOVE_COUNT=$((MOVE_COUNT + 1))
+  if [ "$guess" -eq "$secret" ]; then
+    echo "Congratulations, you found the number in $attempts moves!"
+    exit 0
+  elif [ "$guess" -gt "$secret" ]; then
+    echo "Go down"
+  else
+    echo "Go up"
+  fi
 
-    # Compare
-    if [ "$guess" -eq "$SECRET" ]; then
-        echo "Congratulations, you found the number in $MOVE_COUNT moves!"
-        exit 0
-    elif [ "$guess" -gt "$SECRET" ]; then
-        echo "Go down"
-    else
-        echo "Go up"
-    fi
-
-    # Only decrease tries AFTER a valid guess
-    i=$((i - 1))
+  # Decrement tries after a valid (but incorrect) guess
+  tries=$((tries - 1))
 done
 
-# If loop ends without finding the number
-echo "You lost, the number was $SECRET"
+# Out of tries
+echo "You lost, the number was $secret"
