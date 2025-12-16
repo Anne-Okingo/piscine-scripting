@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # 1. Everything starting with 'a' or Everything ending with 'z' or Everything starting with 'z' and ending with 'a!'
-find . -type f \( -name "a*" -o -name "*z" -o  -name "z*a!" \)
+find . -type f \( -name "a*" -o -name "*z" -o -name "z*a!" \)
