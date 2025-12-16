@@ -4,4 +4,4 @@
 printenv PWD
 
 # 2. Print all environment variable NAMES that contain H
-printenv | awk -F= '/H/ {print $1}'
+printenv | grep H | cut -d= -f1
